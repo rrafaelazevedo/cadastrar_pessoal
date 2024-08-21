@@ -49,7 +49,22 @@ class PessoaJuridica(Pessoa):
     def __init__(self, nome='', rendimento=0.0, endereco=None, cnpj=''):
         super().__init__(nome, rendimento, endereco)
         self.cnpj = cnpj
+        if endereco is None:
+            endereco = Endereco()     
+    
+    def calcular_imposto(self, rendimento: float) -> float:
 
-    def calcular_imposto(self) -> float:
-        # Exemplo básico: 10% de imposto para Pessoa Jurídica
-        return self.rendimento * 0.10
+        # sem imposto para rendimentos até 55000
+        if self.rendimento <= 55000:
+            return 0
+        # 2% de imposto para rendimento entre 55000 e 75000
+        elif 1500 < self.rendimento <= 75000:
+            return (self.rendimento - 55000) * 0.02
+        # 3.5% de imposto para rendimentos entre 75000 e 90000
+        elif 3500 < self.rendimento <= 6000:
+            return (self.rendimento - 75000) * 0.035 + (75000 - 55000) * 0.02
+        # 5% de imposto para rendimentos acima de 90000
+        else:
+            return (self.rendimento - 90000) * 0.05 + (9000 - 55000) * 0.035 + (75000 - 55000) * 0.02
+    
+

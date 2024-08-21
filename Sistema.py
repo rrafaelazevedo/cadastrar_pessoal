@@ -1,8 +1,9 @@
-from Pessoa import Endereco, PessoaFisica
+from Pessoa import Endereco, PessoaFisica, Pessoa, PessoaJuridica
 from datetime import date, datetime
 
 # lista global para armazenar pessoas físicas
 lista_pf = []
+lista_pj = []
 
 def main():
     while True:
@@ -10,7 +11,7 @@ def main():
 
         if opcao == 1:
             while True:
-                opcao_pf = int(input('Digite uma opção: 1 - Cadastrar pessoa física | 2 - Listar pessoa física | 0 - Voltar ao menu anterior '))
+                opcao_pf = int(input('Digite uma opção: 1 - Cadastrar pessoa física | 2 - Listar pessoa física | 3 - Remover CPF da lista | 0 - Voltar ao menu anterior '))
                 
                 # cadastrar uma pessoa física
                 if opcao_pf == 1:
@@ -30,7 +31,7 @@ def main():
                         print('A pessoa tem menos de 18 anos. Retornando ao menu...')
                         continue  # retorna ao início do looping
 
-                    # cadastro de endereço
+                    # cadastro de endereço_pf
                     novo_end_pf.logradouro = input('Digite o logradouro: ')
                     novo_end_pf.numero = input('Digite um número: ')
                     end_comercial = input('Este endereço é comercial? (S/N): ')
@@ -49,12 +50,33 @@ def main():
                             print(f'CPF: {cada_pf.cpf}')
                             print(f'Endereço: {cada_pf.endereco.logradouro}, {cada_pf.endereco.numero}')
                             print(f'Data de Nascimento: {cada_pf.data_nascimento.strftime("%d/%m/%Y")}')
-                            print(f'Imposto a ser pago: {cada_pf.calcular_imposto()}')
+                            print(f'Imposto a ser pago: R${cada_pf.calcular_imposto(nova_pf.rendimento):.2f}')
                             print('Digite qualquer tecla para continuar...')
                             input()
                     else:
                         print('LISTA VAZIA []')
                 
+                
+                # remover pessoa física da lista
+                elif opcao_pf == 3:                    
+                    remover_cpf = input('Insira o CPF da pessoa a ser removida: ')
+                    
+                    cpf_encontrado = False
+
+                    for cada_pf in lista_pf:
+                        if cada_pf.cpf == remover_cpf:
+                            lista_pf.remove(cada_pf)
+                            cpf_encontrado = True
+                            print('Pessoa Física removida!')
+                            break
+                    
+                    if not cpf_encontrado:
+                        print('Pessoa não listada no database.')
+                        
+
+                    
+
+
                 # sair do menu atual
                 elif opcao_pf == 0:
                     print('Retornando ao menu anterior')
@@ -63,9 +85,58 @@ def main():
                 else:
                     print('Opção inválida, por favor digite uma das opções indicadas.')
 
-        elif opcao == 2:
-            print('Funcionalidade para pessoa jurídica não implementada.')
-            pass
+
+
+
+                
+
+        elif opcao == 2:                
+                opcao_pj = int(input('Digite uma opção: 1 - Cadastrar pessoa jurídica | 2 - Listar pessoa jurídica | 3 - Remover CNPJ da lista | 0 - Voltar ao menu anterior '))
+                if opcao_pj == 1:
+                    nova_pj = PessoaJuridica()
+                    novo_end_pj = Endereco()
+                    nova_pj.nome = input('Digite o nome da pessoa jurídica: ')
+                    nova_pj.cnpj = input('Digite o CNPJ: ')
+                    nova_pj.rendimento = float(input('Digite o rendimento mensal da companhia (somente números): '))
+
+                    # cadastro de endereço_pj
+                    novo_end_pj.logradouro = input('Digite o logradouro: ')
+                    novo_end_pj.numero = input('Digite um número: ')                  
+                    lista_pj.append(nova_pj)
+            
+                    print('Cadastro realizado com sucesso!')
+
+                    # listar pessoas físicas
+                elif opcao_pj == 2:
+                    if lista_pj:
+                        for cada_pj in lista_pj:
+                            print(f'\nNome: {cada_pj.nome}')
+                            print(f'Endereço: {cada_pj.endereco.logradouro}, {cada_pj.endereco.numero}')
+                            print(f'CNPJ: {cada_pj.cnpj}')                           
+                            print(f'Imposto a ser pago: R${cada_pj.calcular_imposto(nova_pj.rendimento):.2f}')
+
+                            
+                            print('Digite qualquer tecla para continuar...')
+                            input()
+                    else:
+                        print('LISTA VAZIA []')
+                
+                
+                # remover pessoa física da lista
+                elif opcao_pj == 3:                    
+                    remover_cnpj = input('Insira o CNPJ da pessoa a ser removida: ')
+                    
+                    cnpj_encontrado = False
+
+                    for cada_pj in lista_pj:
+                        if cada_pj.cnpj == remover_cnpj:
+                            lista_pj.remove(cada_pj)
+                            cpf_encontrado = True
+                            print('Pessoa Jurídica removida!')
+                            break
+                    
+                    if not cnpj_encontrado:
+                        print('Pessoa jurídica não listada no database.')
 
         elif opcao == 0:
             print('Obrigado por utilizar o nosso sistema!')
