@@ -141,7 +141,8 @@ def main():
                     nova_pj.nome = input('Digite o nome da pessoa jurídica: ')
                     nova_pj.cnpj = input('Digite o CNPJ: ')
                     nova_pj.rendimento = float(input('Digite o rendimento mensal da companhia (somente números): '))
-                    # cadastro de endereço_pj
+                    
+                # cadastro de endereço_pj
                     novo_end_pj.logradouro = input('Digite o logradouro: ')
                     novo_end_pj.numero = input('Digite um número: ')   
                     end_comercial_pj = input('Seu endereço é comercial? S/N: ')
@@ -150,7 +151,7 @@ def main():
                     lista_pj.append(nova_pj)            
                     print('Cadastro realizado com sucesso!')
 
-                # listar pessoas físicas
+                # listar pessoa jurídica
                 elif opcao_pj == 2:
                     if lista_pj:
                         for cada_pj in lista_pj:
@@ -166,7 +167,7 @@ def main():
                         print('LISTA VAZIA []')
                 
                 
-                # remover pessoa física da lista
+                # remover pessoa jurídica da lista
                 elif opcao_pj == 3:                    
                     remover_cnpj = input('Insira o CNPJ da pessoa a ser removida: ')
                     
@@ -201,9 +202,34 @@ def main():
                             print('0 - Voltar')
                             opcao_atualizar = int(input('Digite a opção desejada: '))
 
+                            
                             if opcao_atualizar == 1:
-                                pessoa_atualizada =
+                                pessoa_atualizada.nome = input(f'Nome ({pessoa_atualizada.nome}): ') or pessoa_atualizada.nome
+                                print('Nome atualizado com sucesso!')
+                                
+                            
+                            elif opcao_atualizar == 2:
+                                pessoa_atualizada.rendimento = float(input(f'Rendimento mensal ({pessoa_atualizada.rendimento}): ') or pessoa_atualizada.rendimento)
+                                print('Rendimento mensal atualizado com sucesso!')                            
 
+                            elif opcao_atualizar == 3:
+                                novo_endereco = pessoa_atualizada.endereco
+                                novo_endereco.logradouro = input(f'Logradouro ({novo_endereco.logradouro}): ') or novo_endereco.logradouro
+                                novo_endereco.numero = input(f'Número ({novo_endereco.numero}): ') or novo_endereco.numero
+                                end_comercial = input(f'Endereço comercial (S/N) ({ "S" if novo_endereco.endereco_comercial else "N"}): ')
+                                if end_comercial:
+                                    novo_endereco.endereco_comercial = end_comercial.strip().upper() == 'S'
+                                print('Endereço atualizado com sucesso!')
+
+                            elif opcao_atualizar == 0:
+                                break
+
+                            else:
+                                print('Opção inválida, por favor digite uma das opções indicadas.')
+
+                    else:
+                        print('Pessoa Física não encontrada.')
+                
 
         elif opcao == 0:
             print('Obrigado por utilizar o nosso sistema!')
